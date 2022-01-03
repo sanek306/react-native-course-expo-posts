@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
-import {AppLoading} from 'expo';
-import {bootstrap} from './src/bootstrap';
+import React, { useState, useEffect } from 'react';
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
 import { AppNavigation } from './src/navigation/AppNavigation';
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
 
-  if (isReady) {
+  useEffect(async () => {
+    await Font.loadAsync({
+      'open-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+      'open-regular': require('./assets/fonts/OpenSans-Regular.ttf'),
+    })
+    setIsReady(true)
+  }, [])
+
+  if (!isReady) {
     return (
-      <AppLoading 
-        stateAsync={bootstrap}
-        onFinish={() => setIsReady(true)}
-        onError={err => console.log(err)}
-      />
+      <AppLoading />
     )
   }
 
