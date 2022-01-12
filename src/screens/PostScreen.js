@@ -1,12 +1,25 @@
 import React from 'react'
 import {View, StyleSheet, Text, Image, Button, ScrollView, Alert} from 'react-native'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { AppHeaderIcon } from '../components/AppHeaderIcon';
 import { DATA } from '../data'
 import { THEME } from '../theme';
 
-export const PostScreen = ({ navigation }) => {
-    const postId = navigation.getParam('postId');
-
+export const PostScreen = ({ route, navigation }) => {
+    const { postId, date } = route.params;
     const post = DATA.find(p => p.id === postId)
+    const iconName = post.booked ? 'ios-star' : 'ios-star-outline';
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: `Пост от ${new Date(date).toLocaleDateString()}`,
+            headerRight: () => (
+                <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                    <Item title="Take photo" iconName={iconName} onPress={() => alert('Press photo')} />
+                </HeaderButtons>
+            ),
+        });
+    }, [navigation]);
 
     const removeHandler = () => {
         Alert.alert(
@@ -41,14 +54,6 @@ export const PostScreen = ({ navigation }) => {
             <Button title='Удалить' onPress={removeHandler} color={THEME.DANGER_COLOR} />
         </ScrollView>
     )
-}
-
-PostScreen.navigationOptions = ({ navigation }) => {
-    const date = navigation.getParam('date');
-
-    return {
-        headerTitle: `Пост от ${new Date(date).toLocaleDateString()}`,
-    }
 }
 
 const styles = StyleSheet.create({
