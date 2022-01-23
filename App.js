@@ -11,7 +11,10 @@ import { THEME } from './src/theme';
 import { OverflowMenuProvider } from 'react-navigation-header-buttons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
 import { Ionicons } from '@expo/vector-icons'
-import { Platform } from 'react-native-web';
+import { Platform } from 'react-native'
+
+
+const navigatorOptions = {};
 
 const Tab = (
   Platform.OS === 'android' 
@@ -23,9 +26,7 @@ const PostStack = createNativeStackNavigator();
 
 function PostStackScreen() {
   return (
-    <PostStack.Navigator
-      initialRouteName='Main'
-    >
+    <PostStack.Navigator>
       <PostStack.Screen name="Main" component={MainScreen} />
       <PostStack.Screen 
         name="Post"
@@ -41,13 +42,6 @@ function BookedStackScreen() {
   return (
     <BookedStack.Navigator
       initialRouteName='Booked'
-      screenOptions={{
-        headerStyle: {
-            backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
-        },
-        headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-        headerBackTitleVisible: false,
-      }}
     >
       <BookedStack.Screen name="Booked" component={BookedScreen} />
       <BookedStack.Screen name="Post" component={PostScreen} />
