@@ -13,6 +13,10 @@ export const PostScreen = ({ route, navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: `Пост от ${new Date(date).toLocaleDateString()}`,
+            headerStyle: {
+                backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
+            },
+            headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
             headerRight: () => (
                 <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
                     <Item title="Take photo" iconName={iconName} onPress={() => alert('Press photo')} />

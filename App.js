@@ -3,6 +3,7 @@ import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MainScreen } from './src/screens/MainScreen';
 import { PostScreen } from './src/screens/PostScreen';
 import { BookedScreen } from './src/screens/BookedScreen';
@@ -10,9 +11,13 @@ import { THEME } from './src/theme';
 import { OverflowMenuProvider } from 'react-navigation-header-buttons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
 import { Ionicons } from '@expo/vector-icons'
+import { Platform } from 'react-native-web';
 
-const Tab = createBottomTabNavigator();
-
+const Tab = (
+  Platform.OS === 'android' 
+  ? createMaterialBottomTabNavigator
+  : createBottomTabNavigator
+)();
 
 const PostStack = createNativeStackNavigator();
 
@@ -20,13 +25,6 @@ function PostStackScreen() {
   return (
     <PostStack.Navigator
       initialRouteName='Main'
-      screenOptions={{
-        headerStyle: {
-            backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
-        },
-        headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-        headerBackTitleVisible: false,
-      }}
     >
       <PostStack.Screen name="Main" component={MainScreen} />
       <PostStack.Screen 
@@ -90,15 +88,24 @@ export default function App() {
               return <Ionicons name={iconName} size={25} color={color} />;
             },
             headerShown: false,
-            tabBarActiveTintColor: THEME.MAIN_COLOR,
+            tabBarActiveTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+            tabBarStyle: Platform.OS === 'android' ? {
+              backgroundColor: THEME.MAIN_COLOR
+            } : null
           })}
         >
           <Tab.Screen
             name="PostBottom"
+            options={{
+              tabBarLabel: 'Все',
+            }}
             component={PostStackScreen}
           />
           <Tab.Screen 
             name="BookedBottom" 
+            options={{
+              tabBarLabel: 'Избранное'
+            }}
             component={BookedStackScreen} 
           />
         </Tab.Navigator>
