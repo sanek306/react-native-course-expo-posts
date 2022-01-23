@@ -6,7 +6,7 @@ export const AboutScreen = ({ navigation }) => {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            title: 'Информация',
+            title: 'О приложении',
             ...navigationOptions(navigation)
         });
     }, [navigation]);

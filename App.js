@@ -8,6 +8,8 @@ import { TabsNavigator } from './src/navigation/Tabs';
 import { AboutStackScreen } from './src/navigation/AboutStackScreen';
 import { CreateStackScreen } from './src/navigation/CreateStackScreen';
 
+import { THEME } from "./src/theme";
+
 const Drawer = createDrawerNavigator();
 
 export default function App() {
@@ -33,6 +35,10 @@ export default function App() {
         <Drawer.Navigator
           screenOptions={() => ({
             headerShown: false,
+            drawerActiveTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+            drawerLabelStyle: {
+              fontFamily: 'open-bold'
+            }
           })}
         >
           <Drawer.Screen 
@@ -46,14 +52,14 @@ export default function App() {
             name="AboutDrawer"
             component={AboutStackScreen}
             options={{
-              drawerLabel: 'Информация'
+              drawerLabel: 'О приложении'
             }}
           />
           <Drawer.Screen
             name="CreateDrawer"
             component={CreateStackScreen}
             options={{
-              drawerLabel: 'Создать пост'
+              drawerLabel: 'Новый пост'
             }}
           />
         </Drawer.Navigator>
