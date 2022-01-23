@@ -5,10 +5,57 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MainScreen } from './src/screens/MainScreen';
 import { PostScreen } from './src/screens/PostScreen';
+import { BookedScreen } from './src/screens/BookedScreen';
 import { THEME } from './src/theme';
 import { OverflowMenuProvider } from 'react-navigation-header-buttons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
+import { Ionicons } from '@expo/vector-icons'
 
-const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator();
+
+
+const PostStack = createNativeStackNavigator();
+
+function PostStackScreen() {
+  return (
+    <PostStack.Navigator
+      initialRouteName='Main'
+      screenOptions={{
+        headerStyle: {
+            backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
+        },
+        headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+        headerBackTitleVisible: false,
+      }}
+    >
+      <PostStack.Screen name="Main" component={MainScreen} />
+      <PostStack.Screen 
+        name="Post"
+        component={PostScreen}
+      />
+    </PostStack.Navigator>
+  );
+}
+
+const BookedStack = createNativeStackNavigator();
+
+function BookedStackScreen() {
+  return (
+    <BookedStack.Navigator
+      initialRouteName='Booked'
+      screenOptions={{
+        headerStyle: {
+            backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
+        },
+        headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+        headerBackTitleVisible: false,
+      }}
+    >
+      <BookedStack.Screen name="Booked" component={BookedScreen} />
+      <BookedStack.Screen name="Post" component={PostScreen} />
+    </BookedStack.Navigator>
+  );
+}
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -30,22 +77,31 @@ export default function App() {
   return (
     <NavigationContainer>
       <OverflowMenuProvider>
-        <Stack.Navigator 
-          initialRouteName='Main'
-          screenOptions={ {
-            headerStyle: {
-                backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ color }) => {
+              let iconName;
+
+              if (route.name === 'PostBottom') {
+                iconName = 'ios-albums';
+              } else if (route.name === 'BookedBottom') {
+                iconName = 'ios-star';
+              }
+              return <Ionicons name={iconName} size={25} color={color} />;
             },
-            headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-            headerBackTitleVisible: false,
-          }}
+            headerShown: false,
+            tabBarActiveTintColor: THEME.MAIN_COLOR,
+          })}
         >
-          <Stack.Screen name="Main" component={MainScreen} />
-          <Stack.Screen 
-            name="Post"
-            component={PostScreen}
+          <Tab.Screen
+            name="PostBottom"
+            component={PostStackScreen}
           />
-        </Stack.Navigator>
+          <Tab.Screen 
+            name="BookedBottom" 
+            component={BookedStackScreen} 
+          />
+        </Tab.Navigator>
       </OverflowMenuProvider>
     </NavigationContainer>
   );
