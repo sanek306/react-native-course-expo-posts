@@ -6,15 +6,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MainScreen } from './src/screens/MainScreen';
 import { PostScreen } from './src/screens/PostScreen';
+import { AboutScreen } from './src/screens/AboutScreen';
+import { CreateScreen } from './src/screens/CreateScreen';
 import { BookedScreen } from './src/screens/BookedScreen';
 import { THEME } from './src/theme';
 import { OverflowMenuProvider } from 'react-navigation-header-buttons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
 import { Ionicons } from '@expo/vector-icons'
 import { Platform } from 'react-native'
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-
-const navigatorOptions = {};
+const Drawer = createDrawerNavigator();
 
 const Tab = (
   Platform.OS === 'android' 
@@ -49,6 +51,43 @@ function BookedStackScreen() {
   );
 }
 
+const PostTabs = () => (
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ color }) => {
+        let iconName;
+
+        if (route.name === 'PostBottom') {
+          iconName = 'ios-albums';
+        } else if (route.name === 'BookedBottom') {
+          iconName = 'ios-star';
+        }
+        return <Ionicons name={iconName} size={25} color={color} />;
+      },
+      headerShown: false,
+      tabBarActiveTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+      tabBarStyle: Platform.OS === 'android' ? {
+        backgroundColor: THEME.MAIN_COLOR
+      } : null
+    })}
+  >
+    <Tab.Screen
+      name="PostBottom"
+      options={{
+        tabBarLabel: 'Все',
+      }}
+      component={PostStackScreen}
+    />
+    <Tab.Screen 
+      name="BookedBottom" 
+      options={{
+        tabBarLabel: 'Избранное'
+      }}
+      component={BookedStackScreen} 
+    />
+  </Tab.Navigator>
+)
+
 export default function App() {
   const [isReady, setIsReady] = useState(false);
 
@@ -69,40 +108,15 @@ export default function App() {
   return (
     <NavigationContainer>
       <OverflowMenuProvider>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ color }) => {
-              let iconName;
-
-              if (route.name === 'PostBottom') {
-                iconName = 'ios-albums';
-              } else if (route.name === 'BookedBottom') {
-                iconName = 'ios-star';
-              }
-              return <Ionicons name={iconName} size={25} color={color} />;
-            },
+        <Drawer.Navigator
+          screenOptions={() => ({
             headerShown: false,
-            tabBarActiveTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-            tabBarStyle: Platform.OS === 'android' ? {
-              backgroundColor: THEME.MAIN_COLOR
-            } : null
           })}
         >
-          <Tab.Screen
-            name="PostBottom"
-            options={{
-              tabBarLabel: 'Все',
-            }}
-            component={PostStackScreen}
-          />
-          <Tab.Screen 
-            name="BookedBottom" 
-            options={{
-              tabBarLabel: 'Избранное'
-            }}
-            component={BookedStackScreen} 
-          />
-        </Tab.Navigator>
+          <Drawer.Screen name="PostTabs" component={PostTabs} />
+          <Drawer.Screen name="About" component={AboutScreen} />
+          <Drawer.Screen name="Create" component={CreateScreen} />
+        </Drawer.Navigator>
       </OverflowMenuProvider>
     </NavigationContainer>
   );

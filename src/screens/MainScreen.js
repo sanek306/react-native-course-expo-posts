@@ -20,7 +20,7 @@ export const MainScreen = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                    <Item title="Menu" iconName="ios-menu" onPress={() => alert('Press photo')} />
+                    <Item title="Menu" iconName="ios-menu" onPress={() => navigation.openDrawer()} />
                 </HeaderButtons>
             ),
             ...navigationOptions
