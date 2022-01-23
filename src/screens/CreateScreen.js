@@ -1,7 +1,15 @@
 import React from 'react'
 import {View, Text, StyleSheet} from 'react-native'
+import { navigationOptions } from '../navigationOptions';
 
-export const CreateScreen = ({}) => {
+export const CreateScreen = ({ navigation }) => {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            title: 'Создать пост',
+            ...navigationOptions(navigation)
+        });
+    }, [navigation]);
+
 
     return (
         <View style={styles.center}>

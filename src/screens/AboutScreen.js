@@ -1,7 +1,15 @@
 import React from 'react'
 import {View, Text, StyleSheet} from 'react-native'
+import { navigationOptions } from '../navigationOptions';
 
-export const AboutScreen = ({}) => {
+export const AboutScreen = ({ navigation }) => {
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            title: 'Информация',
+            ...navigationOptions(navigation)
+        });
+    }, [navigation]);
 
     return (
         <View style={styles.center}>

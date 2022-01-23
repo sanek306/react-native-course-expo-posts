@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
 import { PostList } from '../components/PostList';
@@ -13,12 +13,7 @@ export const BookedScreen = ({ navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             title: 'Избранное',
-            headerLeft: () => (
-                <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                    <Item title="Menu" iconName="ios-menu" onPress={() => alert('Press photo')} />
-                </HeaderButtons>
-            ),
-            ...navigationOptions
+            ...navigationOptions(navigation)
         });
     }, [navigation]);
 

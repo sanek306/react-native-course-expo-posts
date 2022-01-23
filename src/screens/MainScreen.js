@@ -15,7 +15,7 @@ export const MainScreen = ({ navigation }) => {
             title: 'Мой блог',
             headerRight: () => (
                 <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                    <Item title="Take photo" iconName="ios-camera" onPress={() => alert('Press photo')} />
+                    <Item title="Take photo" iconName="ios-camera" onPress={() => navigation.jumpTo('CreateDrawer')} />
                 </HeaderButtons>
             ),
             headerLeft: () => (

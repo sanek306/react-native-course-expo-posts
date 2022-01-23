@@ -2,91 +2,13 @@ import React, { useState, useEffect } from 'react';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { MainScreen } from './src/screens/MainScreen';
-import { PostScreen } from './src/screens/PostScreen';
-import { AboutScreen } from './src/screens/AboutScreen';
-import { CreateScreen } from './src/screens/CreateScreen';
-import { BookedScreen } from './src/screens/BookedScreen';
-import { THEME } from './src/theme';
 import { OverflowMenuProvider } from 'react-navigation-header-buttons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
-import { Ionicons } from '@expo/vector-icons'
-import { Platform } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { TabsNavigator } from './src/navigation/Tabs';
+import { AboutStackScreen } from './src/navigation/AboutStackScreen';
+import { CreateStackScreen } from './src/navigation/CreateStackScreen';
 
 const Drawer = createDrawerNavigator();
-
-const Tab = (
-  Platform.OS === 'android' 
-  ? createMaterialBottomTabNavigator
-  : createBottomTabNavigator
-)();
-
-const PostStack = createNativeStackNavigator();
-
-function PostStackScreen() {
-  return (
-    <PostStack.Navigator>
-      <PostStack.Screen name="Main" component={MainScreen} />
-      <PostStack.Screen 
-        name="Post"
-        component={PostScreen}
-      />
-    </PostStack.Navigator>
-  );
-}
-
-const BookedStack = createNativeStackNavigator();
-
-function BookedStackScreen() {
-  return (
-    <BookedStack.Navigator
-      initialRouteName='Booked'
-    >
-      <BookedStack.Screen name="Booked" component={BookedScreen} />
-      <BookedStack.Screen name="Post" component={PostScreen} />
-    </BookedStack.Navigator>
-  );
-}
-
-const PostTabs = () => (
-  <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ color }) => {
-        let iconName;
-
-        if (route.name === 'PostBottom') {
-          iconName = 'ios-albums';
-        } else if (route.name === 'BookedBottom') {
-          iconName = 'ios-star';
-        }
-        return <Ionicons name={iconName} size={25} color={color} />;
-      },
-      headerShown: false,
-      tabBarActiveTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
-      tabBarStyle: Platform.OS === 'android' ? {
-        backgroundColor: THEME.MAIN_COLOR
-      } : null
-    })}
-  >
-    <Tab.Screen
-      name="PostBottom"
-      options={{
-        tabBarLabel: 'Все',
-      }}
-      component={PostStackScreen}
-    />
-    <Tab.Screen 
-      name="BookedBottom" 
-      options={{
-        tabBarLabel: 'Избранное'
-      }}
-      component={BookedStackScreen} 
-    />
-  </Tab.Navigator>
-)
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -113,9 +35,27 @@ export default function App() {
             headerShown: false,
           })}
         >
-          <Drawer.Screen name="PostTabs" component={PostTabs} />
-          <Drawer.Screen name="About" component={AboutScreen} />
-          <Drawer.Screen name="Create" component={CreateScreen} />
+          <Drawer.Screen 
+            name="TabsDrawer" 
+            component={TabsNavigator}
+            options={{
+              drawerLabel: 'Главная'
+            }}
+          />
+          <Drawer.Screen
+            name="AboutDrawer"
+            component={AboutStackScreen}
+            options={{
+              drawerLabel: 'Информация'
+            }}
+          />
+          <Drawer.Screen
+            name="CreateDrawer"
+            component={CreateStackScreen}
+            options={{
+              drawerLabel: 'Создать пост'
+            }}
+          />
         </Drawer.Navigator>
       </OverflowMenuProvider>
     </NavigationContainer>
