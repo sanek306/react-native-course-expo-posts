@@ -2,26 +2,29 @@ import React from 'react'
 import {View, StyleSheet, Text, Image, Button, ScrollView, Alert} from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
-import { DATA } from '../data'
 import { THEME } from '../theme';
 import { navigationOptions } from '../navigationOptions';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleBooked } from '../store/actions/post';
 
 export const PostScreen = ({ route, navigation }) => {
+    const allPosts = useSelector(state => state.posts.allPosts);
     const { postId, date } = route.params;
-    const post = DATA.find(p => p.id === postId)
+    const post = allPosts.find(p => p.id === postId);
     const iconName = post.booked ? 'ios-star' : 'ios-star-outline';
+    const dispatch = useDispatch();
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: `Пост от ${new Date(date).toLocaleDateString()}`,
             headerRight: () => (
                 <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                    <Item title="Take photo" iconName={iconName} onPress={() => alert('Press photo')} />
+                    <Item title="Set Booked" iconName={iconName} onPress={() => dispatch(toggleBooked(postId))} />
                 </HeaderButtons>
             ),
-            ...navigationOptions
+            ...navigationOptions(navigation)
         });
-    }, [navigation]);
+    }, [navigation, iconName]);
 
     const removeHandler = () => {
         Alert.alert(
