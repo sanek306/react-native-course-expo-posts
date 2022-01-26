@@ -18,12 +18,7 @@ export const MainScreen = ({ navigation }) => {
                     <Item title="Take photo" iconName="ios-camera" onPress={() => navigation.jumpTo('CreateDrawer')} />
                 </HeaderButtons>
             ),
-            headerLeft: () => (
-                <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                    <Item title="Menu" iconName="ios-menu" onPress={() => navigation.openDrawer()} />
-                </HeaderButtons>
-            ),
-            ...navigationOptions
+            ...navigationOptions(navigation)
         });
     }, [navigation]);
 
