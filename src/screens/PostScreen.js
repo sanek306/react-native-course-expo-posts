@@ -5,7 +5,7 @@ import { AppHeaderIcon } from '../components/AppHeaderIcon';
 import { THEME } from '../theme';
 import { navigationOptions } from '../navigationOptions';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleBooked } from '../store/actions/post';
+import { removePost, toggleBooked } from '../store/actions/post';
 
 export const PostScreen = ({ route, navigation }) => {
     const allPosts = useSelector(state => state.posts.allPosts);
@@ -33,13 +33,15 @@ export const PostScreen = ({ route, navigation }) => {
             [
                 {
                     text: "Отменить",
-                    onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { 
+                {
                     text: "Да", 
                     style: "destructive",
-                    onPress: () => console.log("OK Pressed") 
+                    onPress() {
+                        navigation.navigate('Main')
+                        dispatch(removePost(postId))
+                    } 
                 }
             ]
         );
