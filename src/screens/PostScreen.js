@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {View, StyleSheet, Text, Image, Button, ScrollView, Alert} from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
@@ -11,7 +11,7 @@ export const PostScreen = ({ route, navigation }) => {
     const allPosts = useSelector(state => state.posts.allPosts);
     const { postId, date } = route.params;
     const post = allPosts.find(p => p.id === postId);
-    const iconName = post.booked ? 'ios-star' : 'ios-star-outline';
+    const iconName = post?.booked ? 'ios-star' : 'ios-star-outline';
     const dispatch = useDispatch();
 
     React.useLayoutEffect(() => {
@@ -26,6 +26,12 @@ export const PostScreen = ({ route, navigation }) => {
         });
     }, [navigation, iconName]);
 
+    useEffect(() => {
+        if (!post) {
+            navigation.goBack();
+        }
+    }, [post])
+
     const removeHandler = () => {
         Alert.alert(
             "Удаление поста",
@@ -39,8 +45,8 @@ export const PostScreen = ({ route, navigation }) => {
                     text: "Да", 
                     style: "destructive",
                     onPress() {
-                        navigation.navigate('Main')
-                        dispatch(removePost(postId))
+                        navigation.goBack();
+                        dispatch(removePost(postId));
                     } 
                 }
             ]
@@ -50,12 +56,12 @@ export const PostScreen = ({ route, navigation }) => {
     return (
         <ScrollView>
             <Image 
-                source={{ uri: post.img }}
+                source={{ uri: post?.img }}
                 style={styles.image}
             />
             <View style={styles.textWrap}>
                 <Text style={styles.title}>
-                    {post.text}
+                    {post?.text}
                 </Text>
             </View>
             <Button title='Удалить' onPress={removeHandler} color={THEME.DANGER_COLOR} />

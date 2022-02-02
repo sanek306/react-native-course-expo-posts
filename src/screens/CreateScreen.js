@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import {View, Text, StyleSheet, TextInput, Image, Button, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { useDispatch } from 'react-redux';
+import { PhotoPicker } from '../components/PhotoPicker';
 import { navigationOptions } from '../navigationOptions';
 import { addPost } from '../store/actions/post';
 import { THEME } from '../theme';
 
 export const CreateScreen = ({ navigation }) => {
-    const [text, setText] = useState('')
+    const [text, setText] = useState('');
+    const [img, setImage] = useState(null);
     const dispatch = useDispatch();
 
     React.useLayoutEffect(() => {
@@ -18,7 +20,7 @@ export const CreateScreen = ({ navigation }) => {
 
     const saveHandler = () => {  
         dispatch(addPost({ 
-            img: 'https://static.coindesk.com/wp-content/uploads/2019/01/shutterstock_1012724596-860x430.jpg',
+            img,
             date: new Date().toJSON(),
             text,
             booked: false
@@ -41,13 +43,13 @@ export const CreateScreen = ({ navigation }) => {
                         onChangeText={setText}
                         multiline
                     />
-                    <Image 
-                        style={styles.img}
-                        source={{ 
-                            uri: 'https://static.coindesk.com/wp-content/uploads/2019/01/shutterstock_1012724596-860x430.jpg'
-                        }}
+                    <PhotoPicker setImage={setImage} />
+                    <Button 
+                        title='Создать пост' 
+                        color={THEME.MAIN_COLOR} 
+                        onPress={saveHandler}
+                        disabled={!img || !text}
                     />
-                    <Button title='Создать пост' color={THEME.MAIN_COLOR} onPress={saveHandler} />
                 </View>
             </TouchableWithoutFeedback>
         </ScrollView>
