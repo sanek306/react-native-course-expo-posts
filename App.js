@@ -6,6 +6,7 @@ import { OverflowMenuProvider } from 'react-navigation-header-buttons';
 import { DrawerNavigator } from './src/navigation/Drawer';
 import { Provider } from 'react-redux';
 import store from './src/store';
+import { DB } from './src/db';
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -15,7 +16,14 @@ export default function App() {
       'open-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
       'open-regular': require('./assets/fonts/OpenSans-Regular.ttf'),
     })
-    setIsReady(true)
+    
+    try {
+      await DB.init()
+      setIsReady(true)
+    }
+    catch (e) {
+      console.log(e);
+    }
   }, [])
 
   if (!isReady) {
