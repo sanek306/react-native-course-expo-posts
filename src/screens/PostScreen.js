@@ -19,7 +19,7 @@ export const PostScreen = ({ route, navigation }) => {
             headerTitle: `Пост от ${new Date(date).toLocaleDateString()}`,
             headerRight: () => (
                 <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                    <Item title="Set Booked" iconName={iconName} onPress={() => dispatch(toggleBooked(postId))} />
+                    <Item title="Set Booked" iconName={iconName} onPress={() => dispatch(toggleBooked(post))} />
                 </HeaderButtons>
             ),
             ...navigationOptions(navigation)
