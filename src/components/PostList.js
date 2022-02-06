@@ -1,8 +1,16 @@
 import React from "react";
-import { View, StyleSheet, FlatList} from "react-native";
+import { View, StyleSheet, FlatList, Text} from "react-native";
 import { Post } from "./Post";
 
 export const PostList = ({ data, onClick }) => {
+
+    if (!data.length) {
+        return (
+            <View>
+                <Text style={styles.noItems}>Постов пока нет...</Text>
+            </View>
+        )
+    } 
 
     return (
         <View style={styles.center}>
@@ -20,6 +28,12 @@ export const PostList = ({ data, onClick }) => {
 const styles = StyleSheet.create({
     center: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'center'
+    },
+    noItems: {
+        fontFamily: 'open-regular',
+        fontSize: 18,
+        textAlign: 'center',
+        padding: 10
     }
 })
