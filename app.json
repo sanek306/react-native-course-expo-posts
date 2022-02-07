@@ -17,9 +17,14 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.apuhachou.self-blog-rn-app",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.apuhachou.self_blog_rn_app",
+      "versionCode": 1,
+      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -32,8 +37,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Дать доступ к фото.",
-          "cameraPermission": "Дать доступ к камере."
+          "photosPermission": "Дать доступ к фото."
         }
       ]
     ]
